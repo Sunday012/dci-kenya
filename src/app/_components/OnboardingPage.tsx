@@ -3,15 +3,18 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { Icons } from "./Icons";
+import { useRouter } from 'next/navigation';
 
 export default function OnboardingPage() {
   const { signInWithGoogle, loading } = useAuth()
+  const router = useRouter();
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle()
+      await signInWithGoogle();
+      router.push("/onboarding");
     } catch (error) {
-      console.error("Failed to sign in:", error)
+      console.error("Failed to sign in:", error);
     }
   }
 
