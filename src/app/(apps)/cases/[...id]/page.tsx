@@ -6,6 +6,7 @@ import { FileText, Upload } from "lucide-react"
 import { AppealCaseDialog } from "../../_components/appeal-case"
 import { UploadReportDialog } from "../../_components/upload-report-dialog"
 import { SuccessDialog } from "../../_components/success-dialog"
+import { Icons } from "@/app/_components/Icons"
 
 interface CaseData {
   id: string
@@ -59,7 +60,7 @@ export default function CasePage() {
         <div className="space-y-6">
           <section>
             <h2 className="font-medium mb-2">Case Summary</h2>
-            <p className="text-gray-600">{caseData.summary}</p>
+            <p className="text-[#81889B]">{caseData.summary}</p>
           </section>
 
           <div className="grid grid-cols-3 gap-8">
@@ -82,7 +83,7 @@ export default function CasePage() {
               <h2 className="font-medium mb-2">Report</h2>
               <div className="space-y-2">
                 <Button variant="outline" className="w-full justify-start gap-2" onClick={() => {}}>
-                  <FileText className="h-4 w-4" />
+                  <Icons.file className="h-4 w-4" />
                   Video attachment
                 </Button>
                 {caseData.status === "in_progress" && (
@@ -91,7 +92,7 @@ export default function CasePage() {
                     className="w-full justify-start gap-2"
                     onClick={() => setShowUploadDialog(true)}
                   >
-                    <Upload className="h-4 w-4" />
+                    <Icons.addButton className="h-4 w-4" />
                     Add new report
                   </Button>
                 )}
@@ -115,7 +116,7 @@ export default function CasePage() {
 
           {caseData.status === "pending" && (
             <div className="flex gap-4">
-              <Button onClick={handleAcceptCase}>Accept case</Button>
+              <Button onClick={handleAcceptCase} className="bg-[#003399]">Accept case</Button>
               <Button variant="outline" onClick={() => setShowAppealDialog(true)}>
                 Appeal case
               </Button>

@@ -34,7 +34,7 @@ const caseNotifications = [
         id: "1",
         title: "New case for you!",
         description: "On 24 January 2025 at approximately 14:00 hours, the victi...",
-        code: "Code 4",
+        code: 4,
         date: "Just now",
         isNew: true,
         type: "case" as const,
@@ -43,7 +43,7 @@ const caseNotifications = [
         id: "2",
         title: "New case for you!",
         description: "Burglary at Manhattan, two men down injured in a pool of bl...",
-        code: "Code 3",
+        code: 3,
         date: "Jan 22",
         type: "case",
       },
@@ -56,7 +56,7 @@ const caseNotifications = [
         id: "3",
         title: "New case for you!",
         description: "Burglary at Manhattan, two men down injured in a pool of bl...",
-        code: "Code 3",
+        code: 3,
         date: "Feb 22",
         type: "case",
       },
@@ -165,15 +165,15 @@ export default function NotificationsPage() {
       <h1 className="text-2xl font-semibold mb-8">Notifications</h1>
 
       <Tabs defaultValue="all" className="space-y-6">
-        <TabsList className="gap-4 p-0 h-auto bg-transparent">
+        <TabsList className="gap-4 p-0 h-auto bg-transparent ">
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
-              className="gap-2 data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none px-0 pb-2"
+              className="gap-2 data-[state=active]:bg-transparent data-[state=active]:text-[#003399] shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#003399] rounded-none px-0 pb-2"
             >
-              <tab.icon className="h-4 w-4" />
-              {tab.label}
+              <tab.icon className="h-4 w-4 " />
+              <p className="">{tab.label}</p>
             </TabsTrigger>
           ))}
         </TabsList>

@@ -9,7 +9,7 @@ import { NotificationsDropdown } from "./notification-dropdown"
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 lg:px-6">
+    <header className="sticky top-0 z-40 flex h-[81px] items-center justify-between border-b bg-white px-4 lg:px-6">
       <div className="flex items-center gap-4">
         <Link className="flex items-center gap-2 font-semibold" href="/">
           <div className="h-8 w-8 rounded-full bg-blue-600 text-white grid place-items-center font-bold">D</div>

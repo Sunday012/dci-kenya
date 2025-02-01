@@ -26,21 +26,21 @@ export function AppealCaseDialog({ open, onClose, onSubmit }: AppealCaseDialogPr
         <DialogHeader>
           <DialogTitle>Appeal case</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 py-4">
+        <div className="space-y-4 flex flex-col gap-[12px] py-4">
           <RadioGroup defaultValue="0">
             {reasons.map((reason, i) => (
-              <div key={i} className="flex items-center space-x-2">
+              <div key={i} className="flex items-center space-x-2 h-[64px] border border-[#E2E2E2] rounded-[20px] p-[20px]">
                 <RadioGroupItem value={i.toString()} id={`reason-${i}`} />
                 <Label htmlFor={`reason-${i}`}>{reason}</Label>
               </div>
             ))}
           </RadioGroup>
         </div>
-        <div className="flex justify-end gap-4">
+        <div className="flex gap-4">
+          <Button onClick={onSubmit} className="bg-[#003399]">Appeal case</Button>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={onSubmit}>Appeal case</Button>
         </div>
       </DialogContent>
     </Dialog>

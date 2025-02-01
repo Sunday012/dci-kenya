@@ -1,12 +1,14 @@
 import { FileText, MessageCircle, Bell, Files } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Icons } from "@/app/_components/Icons"
+import Link from "next/link"
 
 interface TimelineItem {
   id: string
   title: string
   description: string
   date: string
-  code?: string
+  code?: number
   isNew?: boolean
   type?: string
 }
@@ -24,21 +26,34 @@ export function Timeline({ items }: TimelineProps) {
   const getIcon = (type?: string) => {
     switch (type) {
       case "report":
-        return <FileText className="h-5 w-5 text-gray-600" />
+        return <Icons.file className="h-5 w-5 text-gray-600" />
       case "chat":
-        return <MessageCircle className="h-5 w-5 text-gray-600" />
+        return <Icons.messageChat className="h-5 w-5 text-gray-600" />
       case "case":
-        return <Files className="h-5 w-5 text-gray-600" />
+        return <Icons.file className="h-5 w-5 text-gray-600" />
       default:
-        return <Bell className="h-5 w-5 text-gray-600" />
+        return <Icons.file className="h-5 w-5 text-gray-600" />
+    }
+  }
+
+  const getHref = (type?: string, id?: string) => {
+    switch (type) {
+      case "report":
+        return `/reports/${id}`
+      case "chat":
+        return `/chats/${id}`
+      case "case":
+        return `/cases/${id}`
+      default:
+        return "#"
     }
   }
 
   return (
-    <div className="relative">
+    <div className="relative max-w-2xl bg-[#F3F4F4] p-8">
       {items.map((group, groupIndex) => (
         <div key={group.month} className="relative">
-          <div className="sticky top-0 bg-white py-2 z-10">
+          <div className="sticky top-0 py-2 z-10">
             <h3 className="text-sm font-medium text-gray-500">{group.month}</h3>
           </div>
           <div className="relative ml-3 pb-8">
@@ -60,25 +75,32 @@ export function Timeline({ items }: TimelineProps) {
                     />
                   </div>
                   <div className="ml-6">
-                    <div className="rounded-lg border bg-white p-4 shadow-sm">
-                      <div className="flex items-start gap-4">
-                        <div className="h-10 w-10 rounded-lg bg-gray-100 grid place-items-center">
-                          {getIcon(item.type)}
-                        </div>
-                        <div className="flex-1 space-y-1">
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm font-medium">{item.title}</p>
-                            <span className="text-xs text-gray-500">{item.date}</span>
+                    <Link href={getHref(item.type, item.id)}>
+                      <div className="rounded-lg border bg-white h-[136px] p-4 shadow-sm cursor-pointer">
+                        <div className="flex items-start gap-4">
+                          <div className="h-10 w-10 rounded-lg bg-gray-100 grid place-items-center">
+                            {getIcon(item.type)}
                           </div>
-                          <p className="text-sm text-gray-500">{item.description}</p>
-                          {item.code && (
-                            <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
-                              {item.code}
+                          <div className="flex-1 space-y-1">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-medium">{item.title}</p>
+                              <span className="text-xs text-gray-500">{item.date}</span>
                             </div>
-                          )}
+                            <p className="text-sm text-gray-500">{item.description}</p>
+                            {item.code && (
+                              <div
+                                className={cn(
+                                  "inline-flex items-center rounded-full border px-2.5 py-1 text-[#81889B] text-xs font-semibold",
+                                  item.code === 4 ? "bg-[#FFEDED] text-[#E9272A]" : ""
+                                )}
+                              >
+                                Code {item.code}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -89,4 +111,3 @@ export function Timeline({ items }: TimelineProps) {
     </div>
   )
 }
-

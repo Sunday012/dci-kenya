@@ -7,11 +7,11 @@ export function BreadcrumbNav() {
   const pathname = usePathname()
   const paths = pathname.split("/").filter(Boolean)
 
-  if (paths.length === 0) return null
+  if (paths.length === 0 || pathname === "/onboarding") return null
 
   return (
     <nav className="flex items-center gap-2 text-sm text-gray-500">
-      <Link href="/apps">Apps</Link>
+      <Link href="/onboarding">Apps</Link>
       {paths.map((path, index) => (
         <div key={path} className="flex items-center gap-2">
           <span>/</span>
@@ -23,4 +23,3 @@ export function BreadcrumbNav() {
     </nav>
   )
 }
-
