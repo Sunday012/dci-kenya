@@ -7,6 +7,8 @@ import { AppealCaseDialog } from "../../_components/appeal-case"
 import { UploadReportDialog } from "../../_components/upload-report-dialog"
 import { SuccessDialog } from "../../_components/success-dialog"
 import { Icons } from "@/app/_components/Icons"
+import { generateMockCases } from "@/lib/case-utils"
+import { notFound } from "next/navigation"
 
 interface CaseData {
   id: string
@@ -29,6 +31,11 @@ export default function CasePage() {
     location: "456 Market Street, Nairobi",
     assignedPersonnel: ["John Mwangi", "Dan Joe"],
   })
+  const case_ = generateMockCases(1)[0]
+
+  if (!case_) {
+    notFound()
+  }
 
   const [showAppealDialog, setShowAppealDialog] = useState(false)
   const [showUploadDialog, setShowUploadDialog] = useState(false)
@@ -117,9 +124,9 @@ export default function CasePage() {
           {caseData.status === "pending" && (
             <div className="flex gap-4">
               <Button onClick={handleAcceptCase} className="bg-[#003399]">Accept case</Button>
-              <Button variant="outline" onClick={() => setShowAppealDialog(true)}>
+              {/* <Button variant="outline" onClick={() => setShowAppealDialog(true)}>
                 Appeal case
-              </Button>
+              </Button> */}
             </div>
           )}
         </div>

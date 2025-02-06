@@ -50,7 +50,7 @@ export function Timeline({ items }: TimelineProps) {
   }
 
   return (
-    <div className="relative max-w-2xl bg-[#F3F4F4] p-8">
+    <div className="relative max-w-2xl bg-[#F3F4F4] rounded-[10px] p-8">
       {items.map((group, groupIndex) => (
         <div key={group.month} className="relative">
           <div className="sticky top-0 py-2 z-10">
