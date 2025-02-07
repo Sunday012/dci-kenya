@@ -39,7 +39,8 @@ export default function CasePage() {
 
   const [showAppealDialog, setShowAppealDialog] = useState(false)
   const [showUploadDialog, setShowUploadDialog] = useState(false)
-  const [showSuccessDialog, setShowSuccessDialog] = useState<"accepted" | "appealed" | null>(null)
+  const [showSuccessDialog, setShowSuccessDialog] = useState<"accepted" | "appealed" | "resolved" | null>(null)
+  const [isReviewed, setIsReviewed] = useState(false)
 
   const handleAcceptCase = () => {
     setCaseData((prev) => ({ ...prev, status: "in_progress" }))
@@ -51,16 +52,35 @@ export default function CasePage() {
     setShowSuccessDialog("appealed")
   }
 
+  const handleResolveCase = () => {
+    setShowSuccessDialog("resolved") 
+    setIsReviewed(true)
+  }
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between">
+          <div className="flex flex-col">
           <h1 className="text-2xl font-semibold">Case {caseData.id}</h1>
           {caseData.status === "in_progress" && (
-            <div className="flex items-center gap-1 text-sm">
+            <div className="flex items-center gap-1 text-sm bg-[#F7F4EB] mt-2 w-[129px] rounded-[10px] py-[6px] px-[12px]">
               <span className="h-2 w-2 rounded-full bg-yellow-400" />
               <span>In progress</span>
             </div>
+          )}
+          </div>
+          {caseData.status === "in_progress" && (
+          <div>
+            {isReviewed ? (
+              <Button onClick={handleResolveCase} className="group bg-[#E1ECFF] text-[#003399]">
+                <Icons.sandclock className="fill-[#003399] group-hover:fill-white" />
+                Under Review
+              </Button>
+            ) : (
+              <Button onClick={handleResolveCase} className="bg-[#003399]">Resolve case</Button>
+            )}
+          </div>
           )}
         </div>
 

@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from 'next/font/local'
 import "./globals.css";
 import { AuthProvider } from "@/providers/AuthProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const interDisplay = localFont({
+//   src: [
+//     {
+//       path: './fonts/InterDisplay-Regular.ttf',
+//       weight: '400',
+//       style: 'normal',
+//     },
+//     {
+//       path: './fonts/InterDisplay-Medium.ttf',
+//       weight: '500',
+//       style: 'normal',
+//     },
+//     {
+//       path: './fonts/InterDisplay-Bold.ttf',
+//       weight: '700',
+//       style: 'normal',
+//     },
+//   ],
+// })
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` antialiased`}
       >
         <AuthProvider>
         {children}

@@ -6,14 +6,15 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { BreadcrumbNav } from "./breadcrump"
 import { NotificationsDropdown } from "./notification-dropdown"
+import Image from "next/image"
 
 export function Header() {
   return (
     <header className="sticky top-0 z-40 flex h-[81px] items-center justify-between border-b bg-white px-4 lg:px-6">
       <div className="flex items-center gap-4">
         <Link className="flex items-center gap-2 font-semibold" href="/">
-          <div className="h-8 w-8 rounded-full bg-blue-600 text-white grid place-items-center font-bold">D</div>
-          <span>Logo</span>
+          <Image src="/icons/dci-logo.svg" alt="DCI Logo" width={30} height={30} />
+          <span className="font-semibold text-black">DCI</span>
         </Link>
         <BreadcrumbNav />
       </div>

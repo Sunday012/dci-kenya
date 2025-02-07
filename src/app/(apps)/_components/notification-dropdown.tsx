@@ -17,6 +17,20 @@ const notifications = [
     href: "/cases/1"
   },
   {
+    title: "Case Approved!",
+    description: "Case GHb7858 has now been resolved",
+    code: "Approved",
+    date: "Feb 10",
+    href: "/cases/1"
+  },
+  {
+    title: "Case Rejected!",
+    description: "Case GHb7858 is still ongoing",
+    code: "Rejected",
+    date: "Feb 11",
+    href: "/cases/1"
+  },
+  {
     title: "New case for you!",
     description: "Burglary at Manhattan, two men down injured in a...",
     code: "Code 3",
