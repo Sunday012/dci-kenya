@@ -10,7 +10,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie"
-import { sendTokenToApi } from "@/api/mutation/sendToken";
+import { sendTokenToApi } from "@/app/api/mutation/sendToken";
 
 interface ApiError {
   detail: Array<{
@@ -71,11 +71,6 @@ export default function OnboardingPage() {
     onSuccess: (data, token) => {
       console.log("firbase_token", token)
       // Cookies.set('auth_token', token, { secure: true })
-      toast({
-        title: "Sign In Successful",
-        description: "Your account has been verified.",
-        variant: "default",
-      })
       console.log("user_token", data.data.access_token)
       setToken(data.data.access_token)
       setUser(data.data.user)

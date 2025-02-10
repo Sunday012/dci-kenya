@@ -8,6 +8,8 @@ export async function sendTokenToApi(token: string) {
     throw new Error('Token is required')
   }
 
+  console.log("token", token)
+
   try {
     const formData = new FormData()
     formData.append('firebase_token', token)
@@ -17,7 +19,6 @@ export async function sendTokenToApi(token: string) {
       formData,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       }
