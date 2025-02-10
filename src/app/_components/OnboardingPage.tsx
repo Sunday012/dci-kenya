@@ -10,6 +10,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie"
+import { sendTokenToApi } from "@/api/mutation/sendToken";
 
 interface ApiError {
   detail: Array<{
@@ -21,40 +22,40 @@ interface ApiError {
 
 type ApiResponse = any
 
-const sendTokenToApi = async (token: string): Promise<ApiResponse> => {
-  try {
-    const formData = new FormData();
-    formData.append("firebase_token", token);
+// const sendTokenToApi = async (token: string): Promise<ApiResponse> => {
+//   try {
+//     const formData = new FormData();
+//     formData.append("firebase_token", token);
 
-    const { data } = await axios.post<ApiResponse>('http://167.235.51.199:8000/api/v1/case_officer/', 
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    );
-    console.log(data);
-    if (data.data.access_token) {
-      console.log("access_token", data.data.access_token);
-      Cookies.set('auth_token', data.data.access_token);
-      toast({
-        title: "Success",
-        description: "Authentication successful",
-        variant: "default",
-      });
-    }
-    return data;
-  } catch (error) {
-    toast({
-      title: "Error",
-      description: error instanceof Error ? error.message : "Failed to authenticate",
-      variant: "destructive",
-    });
-    throw error;
-  }
-}
+//     const { data } = await axios.post<ApiResponse>('http://167.235.51.199:8000/api/v1/case_officer/', 
+//       formData,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           'Content-Type': 'multipart/form-data'
+//         }
+//       }
+//     );
+//     console.log(data);
+//     if (data.data.access_token) {
+//       console.log("access_token", data.data.access_token);
+//       Cookies.set('auth_token', data.data.access_token);
+//       toast({
+//         title: "Success",
+//         description: "Authentication successful",
+//         variant: "default",
+//       });
+//     }
+//     return data;
+//   } catch (error) {
+//     toast({
+//       title: "Error",
+//       description: error instanceof Error ? error.message : "Failed to authenticate",
+//       variant: "destructive",
+//     });
+//     throw error;
+//   }
+// }
 
 export default function OnboardingPage() {
   const { signInWithGoogle, error } = useAuthStore()
