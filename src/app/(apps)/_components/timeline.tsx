@@ -45,7 +45,7 @@ export function Timeline({ items }: TimelineProps) {
       case "case":
         return `/cases/${id}`
       default:
-        return "#"
+        return `/cases/${id}`
     }
   }
 
@@ -84,7 +84,12 @@ export function Timeline({ items }: TimelineProps) {
                           <div className="flex-1 space-y-1">
                             <div className="flex items-center justify-between">
                               <p className="text-sm font-medium">{item.title}</p>
+                              <div className="flex flex-col items-end">
                               <span className="text-xs text-gray-500">{item.date}</span>
+                                {item.isNew && (
+                                <div className="w-6 h-6 rounded-full mt-2 bg-[#2AA9ED]"></div>
+                                )}
+                              </div>
                             </div>
                             <p className="text-sm text-gray-500">{item.description}</p>
                             {item.code && (

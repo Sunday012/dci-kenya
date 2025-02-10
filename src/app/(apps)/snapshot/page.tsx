@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button"
 import { FileText, ChevronRight, Image, Video } from "lucide-react"
 import { StatsCard } from "../_components/stat-card"
 import { Icons } from "@/app/_components/Icons"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { generateMockCases,CRIME_TYPES, STATUS_TYPES } from "@/lib/case-utils"
+import { useRouter } from "next/navigation"
 
 const stats = [
   {
@@ -28,6 +34,8 @@ export default function SnapshotPage() {
     console.log(`Clicked ${label}`);
     // You can add your own click handler logic here
   };
+  const route = useRouter()
+  const cases = generateMockCases(7)
 
   return (
     <main className="p-8">
@@ -47,80 +55,66 @@ export default function SnapshotPage() {
       </div>
 
       {/* Recent Reports and Cases */}
-      <div className="grid gap-8 md:grid-cols-2 mb-8">
-        <div className="p-[30px] rounded-[10px] bg-[#F3F4F4]">
+      <div className="grid gap-8 mb-8">
+        <div className="p-[30px] rounded-[10px]">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold">Recent reports</h2>
-            <Button variant="link" size="sm">
+            <Link href="/cases">
               View all
-            </Button>
+            </Link>
           </div>
-          <div className="space-y-4 ">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i}>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-lg bg-gray-100 grid place-items-center">
-                      {i % 3 === 0 && <FileText className="h-5 w-5 text-gray-600" />}
-                      {i % 3 === 1 && <Video className="h-5 w-5 text-gray-600" />}
-                      {i % 3 === 2 && <Image className="h-5 w-5 text-gray-600" />}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">
-                        {i % 3 === 0 && "doc.274l2l2..."}
-                        {i % 3 === 1 && "vid93kmnd..."}
-                        {i % 3 === 2 && "IMG383mdnd..."}
-                      </p>
-                      <p className="text-xs text-gray-500">PDF</p>
-                    </div>
-                    <div className="flex items-center gap-[40px]">
-                      <p className="text-sm">10:27AM</p>
-                      <p className="text-xs text-gray-500">Jan. 4, 2025</p>
+          <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead></TableHead>
+              <TableHead></TableHead>
+              <TableHead></TableHead>
+              <TableHead></TableHead>
+              <TableHead></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {cases.map((case_) => (
+              <TableRow key={case_.id} className="cursor-pointer">
+                <TableCell>
+                  <Link href={`/cases/${case_.id}`} className="hover:underline">
+                    {case_.id}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <div className="flex -space-x-2">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-2">
+                      {case_.personnel.map((person, i) => (
+                        <Avatar key={i} className="border-2 border-background">
+                        <AvatarImage src={person.avatar} alt={person.name} />
+                        <AvatarFallback>{person.name[0]}</AvatarFallback>
+                        </Avatar>
+                      ))}
+                      </div>
+                      <span className="ml-2">
+                      {case_.personnel.map((person) => person.name).join(", ").length > 20
+                        ? `${case_.personnel.map((person) => person.name).join(", ").slice(0, 20)}...`
+                        : case_.personnel.map((person) => person.name).join(", ")}
+                      </span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </TableCell>
+                <TableCell>{case_.time}</TableCell>
+                <TableCell>{case_.date}</TableCell>
+                <TableCell>
+                    <Badge className={`rounded-[10px] text-black shadow-none py-[6px] px-3 ${case_.status === "resolved" ? "bg-[#EEF7EB] hover:bg-dci-lightGreen" : "bg-[#F7F4EB] hover:bg-dci-lightYellow"}`}>
+                    <span className="inline-block w-2 h-2 mr-2 rounded-full" style={{ backgroundColor: case_.status === "resolved" ? "#4FCB2A" : "#F0C22D" }}></span>
+                    {case_.status === "resolved" ? "Resolved" : "In progress"}
+                    </Badge>
+                </TableCell>
+              </TableRow>
             ))}
-          </div>
+          </TableBody>
+        </Table>
         </div>
-        <div className="p-[30px] rounded-[10px] bg-[#F3F4F4]">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold">Recent cases</h2>
-            <Button variant="link" size="sm">
-              View all
-            </Button>
-          </div>
-          <div className="space-y-4 bg-[#F3F4F4]">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i}>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-lg bg-gray-100 grid place-items-center">
-                      <Icons.alarm className="h-5 w-5 text-gray-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">GHb7858</p>
-                      <p className="text-xs text-gray-500">On 24 January 2025 at approxi...</p>
-                    </div>
-                    <div className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold border">
-                      {i % 2 === 0 ? (
-                        <span className="flex items-center gap-1">
-                          <span className="h-1 w-1 rounded-full bg-yellow-500" />
-                          In progress
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-1">
-                          <span className="h-1 w-1 rounded-full bg-green-500" />
-                          Resolved
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+      </div>
       </div>
 
       {/* Crime Map */}

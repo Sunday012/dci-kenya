@@ -11,7 +11,7 @@ export function BreadcrumbNav() {
 
   return (
     <nav className="flex items-center gap-2 text-sm text-gray-500">
-      <Link href="/onboarding">Apps</Link>
+      <Link href="/snapshot">Apps</Link>
       {paths.map((path, index) => (
         <div key={path} className="flex items-center gap-2">
           <span>/</span>

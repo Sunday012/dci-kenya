@@ -27,10 +27,6 @@ export function generateMockCases(count: number): Case[] {
         name: "John Jay",
         avatar: "/placeholder.svg",
       },
-      {
-        name: "Van Da",
-        avatar: "/placeholder.svg",
-      },
     ],
     time: "10:27 AM",
     date: "4 Jan, 2025",
