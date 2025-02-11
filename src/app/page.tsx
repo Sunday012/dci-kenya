@@ -121,7 +121,7 @@ const handleSignIn = async () => {
     const newUser = await signInWithGoogle()
     if (newUser) {
       const token = await newUser.getIdToken()
-      
+      console.log("newToken",token)
       tokenMutation.mutate(token)
 
       toast({
