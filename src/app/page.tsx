@@ -8,7 +8,6 @@ import { userStore } from "@/stores/userStore";
 import { useAuthStore } from "@/stores/authStore";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
 import { sendTokenToApi } from "@/app/api/mutation/sendToken";
 import { Icons } from "./_components/Icons";
 
@@ -62,66 +61,74 @@ export default function Home() {
   const route = useRouter();
   const { setUser, setToken } = userStore();
 
-  const { mutate, isPending } = useMutation<any, Error, string>({
-    mutationFn: async (token: string) => {
-      const formData = new FormData();
-      formData.append("firebase_token", token);
-
-      const response = await fetch("/api/sendToken", {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) throw new Error("Failed to send token");
-      return response.json();
-    },
-    onSuccess: (data) => {
-      setToken(data.data.access_token);
-      setUser(data.data.user);
-
+  const tokenMutation = useMutation<
+  ApiResponse,
+  AxiosError<ApiError>,
+  string
+>({
+  mutationFn: sendTokenToApi,
+  onSuccess: (data, token) => {
+    console.log("firbase_token", token)
+    // Cookies.set('auth_token', token, { secure: true })
+    console.log("user_token", data.data.access_token)
+    setToken(data.data.access_token)
+    setUser(data.data.user)
+    route.push("/snapshot")
+  },
+  onError: (error) => {
+    console.error('API Error:', error)
+    
+    // Handle specific 403 error for case officer access
+    if (error.response?.status === 403) {
+      const errorMessage = error.response.data?.detail[0]?.msg || 
+        "You don't have permission to access this page. Please ensure you have the correct role."
+      
       toast({
-        title: "Authentication Successful",
-        description: "You have been logged in",
-        variant: "default",
-      });
-
-      if (data.data.user.kyc_verification == false) {
-        route.push("/snapshot");
-      } else {
-        route.push("/");
-      }
-    },
-    onError: (error) => {
-      toast({
-        title: "Authentication Failed",
-        description: error.message,
+        title: "Access Denied",
+        description: errorMessage,
         variant: "destructive",
-      });
-    },
-  });
-
-  const handleGoogleSignIn = async () => {
-    try {
-      const newUser = await signInWithGoogle();
-      if (newUser) {
-        const token = await newUser.getIdToken();
-        console.log(token)
-        mutate(token);
-
-        toast({
-          title: "Google Sign In Successful",
-          description: `Welcome, ${newUser.displayName || newUser.email}!`,
-          variant: "default",
-        });
-      }
-    } catch (error) {
-      console.error("Error during sign in:", error);
-      toast({
-        title: "Sign In Failed",
-        description: "An error occurred during sign in. Please try again.",
-        variant: "destructive",
-      });
+      })
+      
+      // You might want to redirect to a different page or show different UI
+      route.push("/unauthorized") // Create this page to handle unauthorized access
+      return
     }
-  };
+    
+    // Handle other errors
+    const errorMessage = error.response?.data?.detail?.[0]?.msg || 
+      'Failed to verify your account. Please try again.'
+    
+    toast({
+      title: "Verification Failed",
+      description: errorMessage,
+      variant: "destructive",
+    })
+  }
+})
+
+const handleSignIn = async () => {
+  try {
+    const newUser = await signInWithGoogle()
+    if (newUser) {
+      const token = await newUser.getIdToken()
+      
+      tokenMutation.mutate(token)
+
+      toast({
+        title: "Google Sign In Successful",
+        description: `Welcome, ${newUser.displayName || newUser.email}!`,
+        variant: "default",
+      })
+    }
+  } catch (error) {
+    console.error("Error during sign in:", error)
+    toast({
+      title: "Sign In Failed",
+      description: "An error occurred during sign in. Please try again.",
+      variant: "destructive",
+    })
+  }
+}
 
   // const handleGoogleSignIn = async () => {
   //   try {
@@ -132,13 +139,13 @@ export default function Home() {
   //   }
   // }
 
-  if (isPending) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-      </div>
-    );
-  }
+  // if (isPending) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#F3F4F4]">
@@ -156,7 +163,7 @@ export default function Home() {
         </div>
 
         <Button
-          onClick={handleGoogleSignIn}
+          onClick={handleSignIn}
           variant="outline"
           className="w-full flex items-center rounded-[20px] justify-center bg-[#F1F2F3] border border-[#E2E2E2] font-bold text-[#1F3D4F] gap-2 py-6"
         >
