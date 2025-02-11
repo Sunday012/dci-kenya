@@ -96,7 +96,7 @@ export default function Home() {
     
     // Handle other errors
     const errorMessage = error.response?.data?.detail?.[0]?.msg || 
-      'Failed to verify your account. Please try again.'
+      'Unable to authenticate. This account appears to be a citizen account.'
     
     toast({
       title: "Verification Failed",
