@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData()
     const token = formData.get('firebase_token') as string
-    
+    console.log(token)
     if (!token) {
       return Response.json({ error: 'Token is required' }, { status: 400 })
     }
