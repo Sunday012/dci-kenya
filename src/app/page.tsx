@@ -66,7 +66,17 @@ export default function Home() {
   AxiosError<ApiError>,
   string
 >({
-  mutationFn: sendTokenToApi,
+  mutationFn: async (token: string) => {
+    const formData = new FormData();
+    formData.append('firebase_token', token);
+    const response = await axios.post('/api/sendToken', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    console.log(response.data.data.data)
+    return response.data
+  },
   onSuccess: (data, token) => {
     console.log("firbase_token", token)
     // Cookies.set('auth_token', token, { secure: true })
@@ -90,7 +100,7 @@ export default function Home() {
       })
       
       // You might want to redirect to a different page or show different UI
-      route.push("/unauthorized") // Create this page to handle unauthorized access
+      route.push("/") // Create this page to handle unauthorized access
       return
     }
     
@@ -139,13 +149,13 @@ const handleSignIn = async () => {
   //   }
   // }
 
-  // if (isPending) {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-screen">
-  //       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-  //     </div>
-  //   );
-  // }
+  if (tokenMutation.isPending) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+      </div>
+    );
+  }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#F3F4F4]">

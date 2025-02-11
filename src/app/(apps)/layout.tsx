@@ -7,8 +7,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
         <div className="min-h-screen bg-white">
           <Header />
           <div className="relative bg-[#F3F4F4] p-6">
@@ -17,7 +15,5 @@ export default function RootLayout({
             </div>
           </div>
         </div>
-      </body>
-    </html>
   )
 }
